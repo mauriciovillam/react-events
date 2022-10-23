@@ -6,8 +6,8 @@ without dealing with prop drilling, context, or using any state manager (e.g Red
 This library allows you to dispatch and consume custom events easily. 
 This leverages JavaScript's document event listeners and the [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) interface.
 
-Everything is fully-typed, that means you will be able to pass a payload to the 
-events  and consume them safely, as the payload type will be automatically inferred.
+Everything is fully-typed. That means you will be able to pass a payload to the 
+events and consume it safely. The payload type will be automatically inferred.
 
 ## Installation
 
@@ -20,14 +20,22 @@ $ yarn add react-events
 
 This library provides three main functions:
 
+```js
+function createEvent(type);
+function emit(event, data);
+function useListener(callback, deps);
+```
+
+As an example, we can use them the following way:
+
 ```ts
 // First, we create an event instance
-const OpenModalEvent = createEvent<{ title: string }>();
+const ClickedOpenModalEvent = createEvent<{ title: string }>();
 
 // Second, we trigger it
 function Component() {
     const handleButtonClick = () => {
-        emit(OpenModalEvent, { title: "My Modal Title" });
+        emit(ClickedOpenModalEvent, { title: "My Modal Title" });
     }
     
     // ...
@@ -41,7 +49,7 @@ function Modal() {
     useListener(({ title }) => {
         setTitle(title);
         setVisible(true);
-    }, [OpenModalEvent]);
+    }, [ClickedOpenModalEvent]);
     
     // ...
 }
